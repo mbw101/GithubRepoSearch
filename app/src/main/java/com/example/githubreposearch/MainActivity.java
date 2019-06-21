@@ -8,11 +8,14 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.net.URL;
+import com.example.githubreposearch.utilities.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity {
     // Create an edit text variable
     EditText searchBoxEditText;
+
+    // create url display and search results text views
     TextView urlDisplayTextView;
     TextView searchResults;
 
@@ -29,6 +32,13 @@ public class MainActivity extends AppCompatActivity {
         searchBoxEditText = findViewById(R.id.et_search_box);
         urlDisplayTextView = findViewById(R.id.urlDisplay);
         searchResults = findViewById(R.id.githubSearchResultsJson);
+    }
+
+    public void makeGithubSearchQuery()
+    {
+        String githubQuery = searchBoxEditText.getText().toString();
+        URL githubSearchURL = NetworkUtils.buildUrl(githubQuery);
+        urlDisplayTextView.setText(githubSearchURL.toString());
     }
 
     @Override
@@ -49,7 +59,10 @@ public class MainActivity extends AppCompatActivity {
             String message = "Search Clicked";
 
             // show a toast
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+
+            // Make the github search
+            makeGithubSearchQuery();
         }
 
         return super.onOptionsItemSelected(item);

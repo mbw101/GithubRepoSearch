@@ -19,7 +19,7 @@
         android:id="@+id/urlDisplay"
         android:textSize="22sp"
         android:layout_marginTop="8dp"
-        android:text="Enter a search quary and your URL will show up here"
+        android:text="Enter a search query and your URL will show up here"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
