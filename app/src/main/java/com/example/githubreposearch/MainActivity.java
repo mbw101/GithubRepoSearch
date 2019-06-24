@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,16 +23,20 @@ public class MainActivity extends AppCompatActivity {
 
     // create url display and search results text views
     TextView urlDisplayTextView;
-    TextView searchResults;
+    TextView searchResultsTextView;
 
-    final static String GIT_HUB_BASE_URL =
-            "https://api.github.com/search/repositories";
-    final static String PARAM_QUERY = "q";
-    final static String PARAM_SORT = "sort";
+    TextView errorMessageTextView;
+    ProgressBar progressBar; // reference to a progress bar variable
 
     // github query task that uses asynctask
     public class GithubQueryTask extends AsyncTask<URL, Void, String>
     {
+        @Override
+        protected void onPreExecute() {
+            // Sett the loading indicator to visible
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
         // this doInBackground has to be rewritten
         // for the async class to work
         @Override
@@ -52,11 +58,34 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
+            // hide the loading indicator
+            progressBar.setVisibility(View.INVISIBLE);
             if (s != null && !s.equals(""))
             {
-                searchResults.setText(s);
+                // Call showJsonDataView if we have valid, non-null results
+                showJsonDataView();
+                searchResultsTextView.setText(s);
+            }
+            else
+            {
+                // showErrorMessage if the result is null in onPostExecute
+                showErrorMessage();
             }
         }
+    }
+
+    // show the data and hide the error
+    public void showJsonDataView()
+    {
+        errorMessageTextView.setVisibility(View.INVISIBLE);
+        searchResultsTextView.setVisibility(View.VISIBLE);
+    }
+
+    // show the error and hide the data
+    public void showErrorMessage()
+    {
+        errorMessageTextView.setVisibility(View.VISIBLE);
+        searchResultsTextView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -64,9 +93,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // text views
         searchBoxEditText = findViewById(R.id.et_search_box);
         urlDisplayTextView = findViewById(R.id.urlDisplay);
-        searchResults = findViewById(R.id.githubSearchResultsJson);
+        searchResultsTextView = findViewById(R.id.githubSearchResultsJson);
+        errorMessageTextView = findViewById(R.id.errorMessageDisplay);
+
+        // progress bar
+        progressBar = findViewById(R.id.loadingIndicatorProgressBar);
     }
 
     public void makeGithubSearchQuery() {

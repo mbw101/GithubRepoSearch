@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    
+
     <EditText
         android:id="@+id/et_search_box"
         android:hint="Type a query for Github!"
@@ -23,15 +23,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/githubSearchResultsJson"
-            android:text="Make a search and your results will show up here!"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </ScrollView>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/githubSearchResultsJson"
+                android:text="Make a search and your results will show up here!"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </ScrollView>
+
+            <!-- This is the error text view !-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:id="@+id/errorMessageDisplay"
+                android:padding="16dp"
+                android:visibility="invisible"
+                android:text="@string/error_message"
+                />
+
+            <ProgressBar
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center"
+                android:id="@+id/loadingIndicatorProgressBar"
+                android:visibility="invisible"
+
+                />
+    </FrameLayout>
+
 </LinearLayout>
